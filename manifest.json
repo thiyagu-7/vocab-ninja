@@ -1,0 +1,33 @@
+{
+    "name": "Vocabulary Ninja",
+    "version": "1.0",
+    "description": "Saves words and definitions from vocabulary.com as Anki notes",
+    "permissions": [
+        "activeTab",
+        "declarativeContent",
+        "storage",
+        "webNavigation"
+    ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ],
+        "persistent": false
+    },
+    "page_action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "images/vocabulary-icon16.png",
+            "32": "images/vocabulary-icon32.png",
+            "48": "images/vocabulary-icon48.png",
+            "128": "images/vocabulary-icon128.png"
+        }
+    },
+    "icons": {
+        "16": "images/vocabulary-icon16.png",
+        "32": "images/vocabulary-icon32.png",
+        "48": "images/vocabulary-icon48.png",
+        "128": "images/vocabulary-icon128.png"
+    },
+    "manifest_version": 2
+}
