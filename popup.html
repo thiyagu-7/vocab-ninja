@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            min-width: 100px;
+        }
+
+        button {
+            height: 30px;
+            width: 100px;
+            outline: none;
+            display: block;
+        }
+        #saveWord {
+            background-color: #2aa22a;
+        }
+        #loading,
+        #saveSuccess,
+        #saveFail {
+            display: none;
+        }
+
+        #saveSuccess {
+            color: green;
+            text-align: center;
+        }
+
+        #saveFail {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="saveWord"> Save word</button>
+
+    <div id="loading"
+         style="margin-top:5px">
+        <div id="loader"
+             style="margin-top:30px"></div>
+    </div>
+
+    <div id="saveSuccess">
+        <h3> Saved &#x2705; </h3>
+    </div>
+    <div id="saveFail">
+        <h3> Save failed &#x274C;
+    </div>
+    </h3>
+    </div>
+
+    <script src="spin.js"></script>
+    <link rel="stylesheet"
+          href="spin.css">
+    <script src="popup.js"></script>
+
+</body>
+
+</html>
