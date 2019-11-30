@@ -1,0 +1,84 @@
+{{FrontSide}}
+
+<hr id=answer>
+<div id="short-blurb">
+    <h3>Short description</h3> {{ShortBlurb}}
+</div>
+
+<br />
+
+<div id="long-blurb">
+    <h3>Long description</h3> {{LongBlurb}}
+</div>
+
+<span id="input">{{Definitions}}</span>
+<span id="root"><span>
+
+        <script>
+            node = document.getElementById("root")
+            definitions = document.getElementById("input").innerText
+
+            var createNewTable = function (id) {
+                table = document.createElement('table');
+                table.id = id
+                table.setAttribute("align", "center");
+
+                header = table.createTHead();
+                row = header.insertRow(0);
+
+                th = document.createElement('th');
+                th.innerHTML = "Ordinal";
+                row.appendChild(th);
+
+                th = document.createElement('th');
+                th.innerHTML = "Part of speech";
+                row.appendChild(th);
+
+                th = document.createElement('th');
+                th.innerHTML = "Definition";
+                row.appendChild(th);
+
+                colgroup = document.createElement('colgroup');
+                colgroup.innerHTML =
+                    '<col span="1" style="width: 10%;"><col span="1" style="width: 10%;"><col span="1" style="width: 80%;">'
+                table.append(colgroup)
+                return table;
+            }
+            let groups = JSON.parse(definitions);
+
+            for (let i = 0; i < groups.length; i++) {
+                console.log("Group " + i)
+                table = createNewTable("table-" + i)
+                node.appendChild(table)
+                body = table.createTBody();
+
+                let rowCount = 0
+                let ordinals = groups[i]
+                for (let j = 0; j < ordinals.length; j++) {
+                    console.log("Ordinal " + j)
+                    let currOrdinal = ordinals[j]
+                    row = body.insertRow(rowCount++)
+
+                    cell = row.insertCell(0)
+                    cell.innerHTML = j + 1
+                    cell.rowSpan = currOrdinal.length;
+
+                    for (let k = 0; k < currOrdinal.length; k++) {
+                        console.log("Definition " + JSON.stringify(currOrdinal[k]))
+                        let colCount = 0;
+                        if (k == 0) {
+                            colCount++;
+                        } else {
+                            row = body.insertRow(rowCount++)
+                        }
+                        cell = row.insertCell(colCount++)
+                        cell.innerHTML = currOrdinal[k].partOfSpeech
+                        cell = row.insertCell(colCount++)
+                        cell.innerHTML = currOrdinal[k].definition
+
+                    }
+                }
+            }
+            //clear
+            document.getElementById("input").innerText = "";
+        </script>
