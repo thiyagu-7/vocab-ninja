@@ -1,6 +1,9 @@
 let saveWord = document.getElementById('saveWord');
+let reSaveWord = document.getElementById('reSaveWord');
 
-saveWord.onclick = function (element) {
+let activeButton;
+
+reSaveWord.onclick = saveWord.onclick = function (element) {
     showSpinnerAndDisableButton()
     chrome.tabs.query({
         active: true,
@@ -17,6 +20,30 @@ saveWord.onclick = function (element) {
             });
     });
 };
+
+//Call on page load
+checkWordExistence();
+
+async function checkWordExistence() {
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    }, async function (tabs) {
+        let word = decodeURI(tabs[0].url.substring(tabs[0].url.lastIndexOf("/") + 1))
+        let res = await findNote(word);
+        if (res.length == 0) {
+            console.log("New word")
+            document.getElementById("new-word").style.display = 'block';
+            document.getElementById("existing-word").style.display = 'none';
+            activeButton = document.getElementById("new-word");
+        } else {
+            console.log("Word already exists " + res)
+            document.getElementById("new-word").style.display = 'none';
+            document.getElementById("existing-word").style.display = 'block';
+            activeButton = document.getElementById("existing-word");
+        }
+    });
+}
 
 var opts = {
     lines: 16, // The number of lines to draw
@@ -42,14 +69,14 @@ spinner = new Spinner(opts).spin(document.getElementById('loader'));
 
 function showSpinnerAndDisableButton() {
     spinner = new Spinner(opts).spin(document.getElementById('loader'));
-    document.getElementById("saveWord").disabled = true;
+    activeButton.disabled = true;
     spinner.spin()
     document.getElementById('loading').style.display = 'block';
 }
 
 function hideSpinnerAndButton(success) {
     spinner.stop()
-    document.getElementById("saveWord").style.display = 'none';
+    activeButton.style.display = 'none';
     document.getElementById('loading').style.display = 'none';
     if (success) {
         document.getElementById('saveSuccess').style.display = 'block';
@@ -58,10 +85,14 @@ function hideSpinnerAndButton(success) {
     }
 }
 
-async function save(word, vocabularyData) {
-    const res = await (invoke('findNotes', 6, {
+async function findNote(word) {
+    return await (invoke('findNotes', 6, {
         "query": "deck:VocabularyNinja Word:" + word
     }))
+}
+
+async function save(word, vocabularyData) {
+    const res = await findNote(word)
     if (res.length > 1) {
         alert("More than one note found for the word " + word)
         return
