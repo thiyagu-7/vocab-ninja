@@ -30,7 +30,7 @@ async function checkWordExistence() {
         currentWindow: true
     }, async function (tabs) {
         let word = decodeURI(tabs[0].url.substring(tabs[0].url.lastIndexOf("/") + 1))
-        let res = await findNote(word);
+        let res = await findNotes(word);
         if (res.length == 0) {
             console.log("New word")
             document.getElementById("new-word").style.display = 'block';
@@ -85,14 +85,14 @@ function hideSpinnerAndButton(success) {
     }
 }
 
-async function findNote(word) {
+async function findNotes(word) {
     return await (invoke('findNotes', 6, {
         "query": "deck:VocabularyNinja Word:" + word
     }))
 }
 
 async function save(word, vocabularyData) {
-    const res = await findNote(word)
+    const res = await findNotes(word)
     if (res.length > 1) {
         alert("More than one note found for the word " + word)
         return
