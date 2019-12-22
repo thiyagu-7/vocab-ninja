@@ -13,12 +13,23 @@
             outline: none;
             display: block;
         }
+
         #saveWord {
             background-color: #2aa22a;
         }
+
+        #reSaveWord {
+            background-color: #ffb31c;
+        }
+
         #loading,
         #saveSuccess,
         #saveFail {
+            display: none;
+        }
+
+        #new-word,
+        #existing-word {
             display: none;
         }
 
@@ -35,7 +46,13 @@
 </head>
 
 <body>
-    <button id="saveWord"> Save word</button>
+
+    <div id="new-word">
+        <button id="saveWord"> Save word</button>
+    </div>
+    <div id="existing-word">
+        <button id="reSaveWord"> Re-Save word</button>
+    </div>
 
     <div id="loading"
          style="margin-top:5px">
