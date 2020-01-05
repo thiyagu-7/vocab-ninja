@@ -15,7 +15,7 @@ reSaveWord.onclick = saveWord.onclick = function (element) {
             },
             async function (results) {
                 console.log(results);
-                await save(decodeURI(tabs[0].url.substring(tabs[0].url.lastIndexOf("/") + 1)), results)
+                await save(getWord(tabs[0].url), results);
                 hideSpinnerAndButton(true)
             });
     });
@@ -24,12 +24,19 @@ reSaveWord.onclick = saveWord.onclick = function (element) {
 //Call on page load
 checkWordExistence();
 
+function getWord(url) {
+    let startIndex = url.lastIndexOf("/") + 1;
+    let endIndex = url.lastIndexOf("?") == -1 ? url.length : url.lastIndexOf("?");
+    let word = url.substring(startIndex, endIndex);
+    return decodeURI(word);
+}
+
 async function checkWordExistence() {
     chrome.tabs.query({
         active: true,
         currentWindow: true
     }, async function (tabs) {
-        let word = decodeURI(tabs[0].url.substring(tabs[0].url.lastIndexOf("/") + 1))
+        let word = getWord(tabs[0].url);
         let res = await findNotes(word);
         if (res.length == 0) {
             console.log("New word")
